@@ -1,0 +1,71 @@
+spring:
+    mail:
+        address: service@tpisoftware.com
+        host: smtp.gmail.com
+#        pcode: 4jlV0b2elM/JymeqpVjjj/CpKuMkUs50
+        # 使用 PBE 所加密的字串
+#        pcode: ENC(mkGgBZgi42/8jCq5LQ34mm8BjPhKLDX5p5ObiSTctGNhxcZF00x4wsKmSbaD+a0O)
+        # 使用 Asymmetric Encryption 所加密的字串
+#        pcode: ENC(Jg2DISMYfFQbQKTCK4xLjXhtDc+cF8oU6Ha7ohU6Tal06942tr6psxmGuCnrWDh32YhGIB2qwI0KVtkR2RyhUuEHFycit673gI7ioXiLkLcH4TFJN3OV7es02O8GZWy+Thdnv0GMdIfZLp2ywi5lkCD0VEqhLX7wKxXUAwRrMZPlkhn/fE/eQP+mx0bw/mXYOleaxcrqm85c3rPLT8j3C+rpLCr1EWKXnPMCmU/bU9FeXCOBkpTGow/sWZgKKXdqb50yCdCXIAr3KiFaQbSI/EkAKJKHQlf7R2jyfcjrBUOhJAdmU2SU0ijzhinRUpRA3dtRtviYpPqbfigh6qHN0g==)
+        pcode: ENC(abQFI4AN9PEit0Oh1Oq2nEheQjf51DWZTIEBr1jlcPaimWk7OrJtycBpVzbM4hOE)
+        username: '[langingH2]GreenSwift'
+    datasource:
+        driver-class-name: org.h2.Driver
+#        url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1 ;MODE=MySQL ##jdbc:h2:mem:test;MODE=MySQL;DB_CLOSE_DELAY=-1 #mem 代表著預設是以 Memory-Base 的方式建立 H2資料庫。
+        url:   jdbc:h2:tcp://localhost/~/springTutorialDb;MODE=MySQL;
+#        url:   jdbc:h2:~/springTutorialDb
+        username: sa
+        password:
+#        initialize : true # 預設值通常是 true, 當內嵌資料庫存在時會自動執行
+        sql-script-encoding: UTF-8
+#        initialization-mode: always
+#        schema: classpath:schema.sql
+    sql:
+        init:
+            schema-location: classpath:schema-h2.sql
+            mode: embedded  #第一次啟動之後always要改成 embedded或者never 下次啟動才不會再次執行sql檔案的DDL而可能造成重複執行insert出錯
+
+    jpa:
+        show-sql: true
+        #http://127.0.0.1:8080/h2-console/
+        #spring.jpa.hibernate.naming.implicit-strategy=org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        hibernate.naming.physical-strategy:
+            org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#        hibernate.ddl-auto: validate => validate 設置會要求資料庫中的表結構與映射模型完全匹配，但它不會自動創建或更新表格。
+#        要解決這個問題，你可以更改 hibernate.ddl-auto 設置，以便在資料庫中自動創建缺失的表格。以下是一些選項：
+#
+#        create: 每次啟動時刪除現有的表格並重新創建。
+#        update: 只更新現有的表結構，不刪除或重建表格。適合在開發階段使用，因為它可以根據模型自動添加新表或新欄位。
+#        create-drop: 每次啟動時創建表格，並在應用停止時刪除表格。
+#        建議
+#        將 hibernate.ddl-auto 設置為 update，這樣可以在資料庫中自動創建缺失的表格。
+        hibernate.ddl-auto: update
+        generate-ddl: true
+
+    h2:
+        console:
+            settings:
+                web-admin-password: sa
+            enabled: true
+jasypt:
+    encryptor:
+#        password: MySalt #encrypt private key
+        private-key-format: PEM
+        private-key-string: |
+            -----BEGIN PRIVATE KEY-----
+            MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtB/IYK8E52CYMZTpyIY9U0HqMewyKnRvSo6s+9VNIn/HSh9+MoBGiADa2MaPKvetS3CD3CgwGq/+L
+            IQ1HQYGchRrSORizOcIp7KBx+Wc1riatV/tcpcuFLC1j6QJ7d2I+T7RA98Sx8X39orqlYFQVysTw/aTawX/yajx0UlTW3rNAY+ykeQ0CBHowtTxKM9nGcxLoQbvbYx1i
+            G9JgAqye7TYejOpviOH+BpD8To2S8zcOSojIhixEfayay0gURv0IKJN2LP86wkpAuAbL+mohUq1qLeWdTEBrIRXjlnrWs1M66w0l/6JwaFnGOqEB6haMzE4JWZULYYpr
+            2yKyoGCRAgMBAAECggEAQxURhs1v3D0wgx27ywO3zeoFmPEbq6G9Z6yMd5wk7cMUvcpvoNVuAKCUlY4pMjDvSvCM1znN78g/CnGF9FoxJb106Iu6R8HcxOQ4T/ehS+54
+            kDvL999PSBIYhuOPUs62B/Jer9FfMJ2veuXb9sGh19EFCWlMwILEV/dX+MDyo1qQaNzbzyyyaXP8XDBRDsvPL6fPxL4r6YHywfcPdBfTc71/cEPksG8ts6um8uAVYbLI
+            DYcsWopjVZY/nUwsz49xBCyRcyPnlEUJedyF8HANfVEO2zlSyRshn/F+rrjD6aKBV/yVWfTEyTSxZrBPl4I4Tv89EG5CwuuGaSagxfQpAQKBgQDXEe7FqXSaGk9xzuPa
+            zXy8okCX5pT6545EmqTP7/JtkMSBHh/xw8GPp+JfrEJEAJJl/ISbdsOAbU+9KAXuPmkicFKbodBtBa46wprGBQ8XkR4JQoBFj1SJf7Gj9ozmDycozO2Oy8a1QXKhHUPk
+            bPQ0+w3efwoYdfE67ZodpFNhswKBgQDN9eaYrEL7YyD7951WiK0joq0BVBLK3rwO5+4g9IEEQjhP8jSo1DP+zS495t5ruuuuPsIeodA79jI8Ty+lpYqqCGJTE6muqLMJ
+            Diy7KlMpe0NZjXrdSh6edywSz3YMX1eAP5U31pLk0itMDTf2idGcZfrtxTLrpRffumowdJ5qqwKBgF+XZ+JRHDN2aEM0atAQr1WEZGNfqG4Qx4o0lfaaNs1+H+knw5kI
+            ohrAyvwtK1LgUjGkWChlVCXb8CoqBODMupwFAqKL/IDImpUhc/t5uiiGZqxE85B3UWK/7+vppNyIdaZL13a1mf9sNI/p2whHaQ+3WoW/P3R5z5uaifqM1EbDAoGAN584
+            JnUnJcLwrnuBx1PkBmKxfFFbPeSHPzNNsSK3ERJdKOINbKbaX+7DlT4bRVbWvVj/jcw/c2Ia0QTFpmOdnivjefIuehffOgvU8rsMeIBsgOvfiZGx0TP3+CCFDfRVqjIB
+            t3HAfAFyZfiP64nuzOERslL2XINafjZW5T0pZz8CgYAJ3UbEMbKdvIuK+uTl54R1Vt6FO9T5bgtHR4luPKoBv1ttvSC6BlalgxA0Ts/AQ9tCsUK2JxisUcVgMjxBVvG0
+            lfq/EHpL0Wmn59SHvNwtHU2qx3Ne6M0nQtneCCfR78OcnqQ7+L+3YCMqYGJHNFSard+dewfKoPnWw0WyGFEWCg==
+            -----END PRIVATE KEY-----
+
+inviteEndDate: 12

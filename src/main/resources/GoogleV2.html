@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google reCAPTCHA v2 Example</title>
+    <!-- 替换为你的 Site Key -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+</head>
+<body>
+    <h1>Google reCAPTCHA v2 - Conditional Display</h1>
+    
+    <!-- 登录表单 -->
+    <label for="username">Username:(0000)</label><br>
+    <input type="text" id="username" name="username" required style="width: 50%; margin-bottom: 20px;"><br>
+
+    <label for="password">Password:(0000)</label><br>
+    <input type="password" id="password" name="password" required style="width: 50%; margin-bottom: 20px;"><br>
+
+    <button type="button" id="loginBtn" style="margin-top: 20px;">登入</button>
+    
+    <!-- reCAPTCHA 验证框 -->
+    <form id="captchaForm" method="POST" action="your-backend-endpoint" style="display: none; margin-top: 20px;">
+        <div class="g-recaptcha" data-sitekey="6LeRbYwqAAAAAPn_JT7_myDNzZoclllTaG4sEHvZ"></div>
+        <button type="submit" id="submitBtn" style="margin-top: 20px;">完成验证</button>
+    </form>
+
+    <!-- 结果显示 -->
+    <div id="result" style="margin-top: 20px; font-family: Arial; font-size: 16px;"></div>
+
+    <script>
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // 检查用户名和密码是否正确
+            if (username === '0000' && password === '0000') {
+                document.getElementById('result').textContent = "登录成功！";
+                document.getElementById('result').style.color = "green";
+            } else {
+                document.getElementById('result').textContent = "账号或密码错误，请完成 reCAPTCHA 验证！";
+                document.getElementById('result').style.color = "red";
+
+                // 显示 reCAPTCHA 验证框
+                document.getElementById('captchaForm').style.display = "block";
+            }
+        });
+
+        // 处理 reCAPTCHA 表单提交
+        document.getElementById('captchaForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 防止表单默认提交
+            const response = grecaptcha.getResponse();    
+            if (!response) {
+                document.getElementById('result').textContent = "请完成 reCAPTCHA 验证！";
+                document.getElementById('result').style.color = "red";
+                return;
+            }
+
+            // 假设验证成功，显示结果
+            document.getElementById('result').textContent = `${response}`;
+            document.getElementById('result').style.color = "green";
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+spring:
+    profiles:
+        active: h2 #需要使用的配置文件的后缀 # stock如果是oracle要加入schema GSMUSER ; h2放在電腦的實體位置： /Users/u-hanlin/workspace-MyProject/h2/bin/h2-2.3.232.jar
+#        active: oracle # stock如果是oracle要加入schema GSMUSER
+    messages:
+        basename: i18n/message
+        encoding: UTF-8
+        cache-duration: 3600
+    ai:
+        openai:
+            api-key: ${OPENAI_API_KEY}
+            base-url: ${OPENAI_API_URL}
+            #groq與open ai相容，其他設定都一樣只需增加 base-url 即可
+            chat:
+                options:
+                    model: llama-3.1-70b-versatile #這裡要輸入 groq 提供的模型
+#                    model: gpt-4o-mini  #記得把模型改為 gpt-4o-mini 才能享受便宜快速的模型

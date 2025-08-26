@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>reCAPTCHA Enterprise Demo</title>
+    <script src="https://www.google.com/recaptcha/enterprise.js" async defer></script>
+
+    <script src="https://www.google.com/recaptcha/api.js?render=6LeHgIwqAAAAAJLTblHhg7t06wb2qvEfTuFr-BNx"></script>
+<!--    <script>-->
+<!--        function onClick(e) {-->
+<!--          e.preventDefault();-->
+<!--          grecaptcha.enterprise.ready(async () => {-->
+<!--            const token = await grecaptcha.enterprise.execute('6LeHgIwqAAAAAJLTblHhg7t06wb2qvEfTuFr-BNx', {action: 'LOGIN'});-->
+<!--            // IMPORTANT: The 'token' that results from execute is an encrypted response sent by-->
+<!--            // reCAPTCHA to the end user's browser.-->
+<!--            // This token must be validated by creating an assessment.-->
+<!--            // See https://cloud.google.com/recaptcha/docs/create-assessment-->
+<!--            console.log('Token generated:', token);-->
+<!--          });-->
+<!--        }-->
+<!--    </script>-->
+
+
+
+
+</head>
+<body>
+<h1>reCAPTCHA Token Generator</h1>
+<button id="verifyButton">Generate Token</button>
+<div id="tokenDisplay" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
+    <!-- Token will be displayed here -->
+    <strong>Token:</strong> <span id="tokenValue">None</span>
+</div>
+
+<script>
+    document.getElementById('verifyButton').addEventListener('click', function () {
+      grecaptcha.enterprise.ready(() => {
+        grecaptcha.enterprise.execute('6LeHgIwqAAAAAJLTblHhg7t06wb2qvEfTuFr-BNx', { action: 'verify' })
+          .then((token) => {
+            console.log('Generated Token:', token);
+
+            // 將 Token 插入到頁面中的 <span> 元素
+            document.getElementById('tokenValue').textContent = token;
+          })
+          .catch((error) => {
+            console.error('Error generating token:', error);
+
+            // 如果出錯，顯示錯誤信息
+            document.getElementById('tokenValue').textContent = 'Error generating token!';
+          });
+      });
+    });
+</script>
+</body>
+<!--<body>-->
+
+<!--<button id="recaptchaButton">Verify with reCAPTCHA</button>-->
+
+<!--<div id="tokenDisplay" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">-->
+<!--    &lt;!&ndash; Token will be displayed here &ndash;&gt;-->
+<!--    <strong>Token:</strong> <span id="tokenValue">None</span>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Attach the onClick function to the button-->
+<!--    document.getElementById('recaptchaButton').addEventListener('click', onClick);-->
+<!--</script>-->
+<!--</body>-->
+</html>

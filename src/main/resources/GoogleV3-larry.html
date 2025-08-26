@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google reCAPTCHA v3 - Display Score</title>
+    <!-- 替换为你的 V3 Site Key -->
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=6LeHgIwqAAAAAJLTblHhg7t06wb2qvEfTuFr-BNx"></script>
+</head>
+<body>
+    <h1>Google reCAPTCHA v3 - Display Score</h1>
+    <button id="checkRecaptchaBtn">Check reCAPTCHA</button>
+    <div id="result" style="margin-top: 20px; font-family: Arial; font-size: 16px;"></div>
+    <div id="renderDiv" style="margin-top: 20px; font-family: Arial; font-size: 16px;"></div>
+
+    <script>
+        var onloadCallback = function() {
+  alert("grecaptcha is ready!");
+    grecaptcha.render('result', {
+    'sitekey': '6Lc045AqAAAAAOgnEe0V4Jb9e78fTrH9nRwKZqW2',     <!-- 替换为你的 V2 Site Key -->
+    'theme': 'light',
+    'size': 'normal',
+    'callback': verifyCallback,
+    'expired-callback': expired,
+    'error-callback': error
+  });
+};
+  function verifyCallback(token) {
+    // 把 token 跟 ip 送到後端做驗證
+      alert("把 token 跟 ip 送到後端做驗證!");
+            document.getElementById('result').textContent = `Token received: ${token}`;
+  }
+    function expired() {
+      alert("expired!");
+  }
+      function error() {
+      alert("error!");
+  }
+      document.getElementById('checkRecaptchaBtn').addEventListener('click', function() {
+          // 初始化 reCAPTCHA
+          grecaptcha.ready(function() {
+              // 执行 reCAPTCHA 并获取 Token
+              grecaptcha.execute('6LeObYwqAAAAAOV3nBl6eu2W9tWNm57-K3P8fWi0', { action: 'submit' }).then(function(token) {
+                  console.log('Token:', token);
+                      document.getElementById('result').textContent = `Token received: ${token}`;
+
+                  // 将 Token 发送到验证接口
+                  // const verifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=6LeObYwqAAAAAOV3nBl6eu2W9tWNm57-K3P8fWi0&response=${token}`;
+
+                  // fetch(verifyUrl, { method: 'POST' ,
+                  //     headers: {
+                  //     'Content-Type': 'application/x-www-form-urlencoded',
+                  //     },
+                  //     body: new URLSearchParams({
+                  //     secret: '6LeObYwqAAAAAOV3nBl6eu2W9tWNm57-K3P8fWi0',
+                  //     response: token
+                  //     }),
+                  //     mode: 'no-cors'  // 禁用 CORS
+
+                  //      })
+                  //     .then(response => response.json())
+                  //     .then(data => {
+                  //         console.log('Verification result:', data);
+
+                  //         // 显示结果
+                  //         const resultDiv = document.getElementById('result');
+                  //         if (data.success) {
+                  //             const score = data.score || 0; // 获取分数
+                  //             const feedback = score >= 0.5 ? "可信用户 👍" : "可疑用户 ⚠️";
+
+                  //             resultDiv.innerHTML = `
+                  //                 <p>reCAPTCHA 分数: <strong>${score}</strong></p>
+                  //                 <p>结果: <strong>${feedback}</strong></p>
+                  //             `;
+                  //             resultDiv.style.color = score >= 0.5 ? "green" : "red";
+                  //         } else {
+                  //             resultDiv.innerHTML = `
+                  //                 <p>验证失败，请重试。</p>
+                  //                 <p>错误信息: ${data['error-codes'] ? data['error-codes'].join(', ') : '未知错误'}</p>
+                  //             `;
+                  //             resultDiv.style.color = "red";
+                  //         }
+                  //     })
+                  //     .catch(error => {
+                  //         console.error('Error:', error);
+                  //         document.getElementById('result').textContent = `请求失败: ${error.message}`;
+                  //         document.getElementById('result').style.color = "red";
+                  //     });
+              });
+          });
+      });
+    </script>
+</body>
+</html>
