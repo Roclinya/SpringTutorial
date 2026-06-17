@@ -1,11 +1,6 @@
 package Synchronized;
-
-import supplierAndConsumerAndFunctionInterface.FunctionExample;
-
 import java.util.HashMap;
-import java.util.function.Function;
-
-public class synChronized {
+public class Synchronized {
 
     public synchronized void addData() {
         for (int i = 0; i < 5; i++) {
@@ -20,9 +15,7 @@ public class synChronized {
         HashMap<String, String> cItems = null;
         cItems = new HashMap<String, String>();
         cResult.put("test", cItems);
-
-
-				cItems.put("subItemNo", "subItemName");
+		cItems.put("subItemNo", "subItemName");
         System.out.println(cItems);
 
     }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest(classes = Demo1Application.class)
-public class SynchronizedBlocksTest {
+public class synchronizedBlocks {
 /* Ref to https://jenkov.com/tutorials/java-concurrency/synchronized.html */
     // 測試前要先去啟動LandingH2 db /Users/u-hanlin/workspace-MyProject/h2  java -jar h2-2.3.232.jar
 //    @Disabled
@@ -51,7 +51,7 @@ public class SynchronizedBlocksTest {
 
 //    @Disabled
     @Test
-    public void  Synchronized_Blocks_in_Non_Static_Methods(){
+    public void  synchronized_Blocks_in_Non_Static_Methods(){
         SynchronizedMethodAndBlock myClass = new SynchronizedMethodAndBlock();
     ExecutorService executorService = Executors.newCachedThreadPool();
         // single thread execution
@@ -83,7 +83,7 @@ public class SynchronizedBlocksTest {
 }
     @Disabled
     @Test
-    public void  Synchronized_Blocks_in_Static_Methods(){
+    public void  synchronized_Blocks_in_Static_Methods(){
         SynchronizedStaticMethodAndBlock myClass = new SynchronizedStaticMethodAndBlock();
         ExecutorService executorService = Executors.newCachedThreadPool();
         // single thread execution
