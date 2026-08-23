@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByUsrName(String usrName);
+    boolean existsByUsrName(String usrName);
 
     List<String> findAllEMail();
 }

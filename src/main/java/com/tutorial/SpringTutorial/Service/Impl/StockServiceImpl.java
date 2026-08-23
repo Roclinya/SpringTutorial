@@ -147,7 +147,6 @@ public class StockServiceImpl implements StockService {
     private Long saveMemberFromStock(Stock stock) {
         System.out.println("第二層 performeDeadLock ,  Thread: " + Thread.currentThread().getName());
         Member member = new Member();
-        member.setId(Long.valueOf(stock.getProductId()));
         member.seteMail("member1@gmail.com");
         member.setUsrName("performeDeadLock User");
         member.setUsrPwd("123");

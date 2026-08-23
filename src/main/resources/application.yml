@@ -15,3 +15,21 @@ spring:
                 options:
                     model: llama-3.1-70b-versatile #這裡要輸入 groq 提供的模型
 #                    model: gpt-4o-mini  #記得把模型改為 gpt-4o-mini 才能享受便宜快速的模型
+
+redisson:
+    address: redis://127.0.0.1:6379
+    password:
+    database: 0
+
+member:
+    scheduler:
+        enabled: true
+        cron: "0 */3 * * * *"
+        test-usr-name: scheduler-lock-user
+        test-email: scheduler-lock-user@example.com
+        test-password: "123456"
+    create-lock-test:
+        enabled: true
+        target-usr-name: scheduler-lock-user
+        sleep-millis: 120000
+

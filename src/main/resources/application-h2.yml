@@ -22,7 +22,7 @@ spring:
 #        schema: classpath:schema.sql
     sql:
         init:
-            schema-location: classpath:schema-h2.sql
+            schema-location: classpath:schema.sql
             mode: embedded  #第一次啟動之後always要改成 embedded或者never 下次啟動才不會再次執行sql檔案的DDL而可能造成重複執行insert出錯
 
     jpa:

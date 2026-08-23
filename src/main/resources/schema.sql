@@ -1,8 +1,16 @@
 
+CREATE TABLE IF NOT EXISTS shedlock(
+	name VARCHAR(64) NOT NULL,
+	lock_until TIMESTAMP(3) NULL,
+	locked_at TIMESTAMP(3) NULL,
+	locked_by VARCHAR(255) NULL,
+	PRIMARY KEY (name)
+);
+
 --member
-INSERT INTO `member` (`id`, `eMail`, `usrName`,`usrPwd`) VALUES (1, '1@gmail.com', '川村元氣','pwd1');
-INSERT INTO `member` (`id`, `eMail`, `usrName`,`usrPwd`) VALUES (2, '2@gmail.com', '安伯托‧艾可','pwd2');
-INSERT INTO `member` (`id`, `eMail`, `usrName`,`usrPwd`) VALUES (3, '3@gmail.com', '崔恩‧葛瑞芬','pwd3');
+INSERT INTO `member` (`eMail`, `usrName`,`usrPwd`) VALUES ('1@gmail.com', '川村元氣','pwd1');
+INSERT INTO `member` (`eMail`, `usrName`,`usrPwd`) VALUES ('2@gmail.com', '安伯托‧艾可','pwd2');
+INSERT INTO `member` (`eMail`, `usrName`,`usrPwd`) VALUES ('3@gmail.com', '崔恩‧葛瑞芬','pwd3');
 
 --student
 INSERT INTO student (`id`, `name`) VALUES (1, 'Alice');
