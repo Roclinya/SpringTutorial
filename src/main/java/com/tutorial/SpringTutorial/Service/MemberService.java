@@ -7,5 +7,7 @@ public interface MemberService {
     MemberResponse createMember(MemberCreateRequest request);
 
     MemberResponse createMemberWithSlowCommit(MemberCreateRequest request, long commitDelayMillis);
+
+    MemberResponse updateMember(Long memberId, MemberCreateRequest request, long holdLockMillis);
 }
 

@@ -13,7 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.dao.PessimisticLockingFailureException;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -142,6 +144,45 @@ class MemberServiceImplTest {
         verify(memberRepository, never()).existsByUsrName(any(String.class));
         verify(memberRepository, never()).save(any(Member.class));
         verify(lock, never()).unlock();
+    }
+
+    @Test
+    void updateMember_success() {
+        MemberCreateRequest request = new MemberCreateRequest();
+        request.setUsrName("new-name");
+        request.seteMail("new@example.com");
+        request.setUsrPwd("new-pwd");
+
+        Member existing = new Member();
+        existing.setId(1L);
+        existing.setUsrName("old-name");
+        existing.seteMail("old@example.com");
+        existing.setUsrPwd("old-pwd");
+
+        when(memberRepository.findByIdForUpdate(1L)).thenReturn(Optional.of(existing));
+        when(memberRepository.save(any(Member.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        MemberResponse result = memberService.updateMember(1L, request, 0L);
+
+        Assertions.assertEquals(1L, result.getId());
+        Assertions.assertEquals("new-name", result.getUsrName());
+        Assertions.assertEquals("new@example.com", result.geteMail());
+    }
+
+    @Test
+    void updateMember_pessimisticLockFailure_shouldPropagate() {
+        MemberCreateRequest request = new MemberCreateRequest();
+        request.setUsrName("new-name");
+        request.seteMail("new@example.com");
+        request.setUsrPwd("new-pwd");
+
+        when(memberRepository.findByIdForUpdate(1L))
+                .thenThrow(new PessimisticLockingFailureException("Lock wait timeout"));
+
+        Assertions.assertThrows(
+                PessimisticLockingFailureException.class,
+                () -> memberService.updateMember(1L, request, 0L)
+        );
     }
 }
 

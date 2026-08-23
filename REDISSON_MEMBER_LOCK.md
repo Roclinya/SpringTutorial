@@ -111,3 +111,43 @@ curl -X POST "http://localhost:8080/memberApi/create" \
 
 預期：手動 API 會因拿不到 Redisson lock 而失敗 (`Unable to create member now, please retry.`)。
 
+## updateMember 悲觀鎖衝突測試 (@Scheduled + @SchedulerLock)
+
+已新增：
+
+- 更新 API：`PUT /memberApi/update/{id}?holdLockMillis=0`
+- 排程類別：`src/main/java/com/tutorial/SpringTutorial/Service/MemberUpdateScheduler.java`
+- 手動觸發排程更新：`POST /memberApi/scheduler/update/trigger`
+
+`updateMember` 內部會使用 JPA `PESSIMISTIC_WRITE` 查同一筆資料，
+當第一個 transaction 尚未結束且持有該 row lock 時，第二個更新同 id 的請求可能會拿不到鎖，
+進而由 Spring 丟出 `PessimisticLockingFailureException`（不是手動 throw）。
+
+建議測試設定：
+
+```yml
+member:
+  update-scheduler:
+    enabled: true
+    cron: "0 */5 * * * *"
+    member-id: 1
+    hold-lock-millis: 120000
+    usr-name: scheduler-lock-user
+    email: scheduler-lock-user@example.com
+    password: "123456"
+```
+
+重現步驟：
+
+1. 啟動服務，確認 `member.update-scheduler.enabled=true`。
+2. 觸發排程更新（或等 cron）：`POST /memberApi/scheduler/update/trigger`。
+3. 在排程仍持有交易期間，用 Postman 再打同一筆資料：
+
+```bash
+curl -X PUT "http://localhost:8080/memberApi/update/1?holdLockMillis=0" \
+  -H "Content-Type: application/json" \
+  -d '{"usrName":"manual-user","eMail":"manual@example.com","usrPwd":"123456"}'
+```
+
+若第二個請求超過 lock timeout 仍拿不到 row lock，就會看到 `PessimisticLockingFailureException`。
+

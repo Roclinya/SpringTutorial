@@ -23,7 +23,7 @@ redisson:
 
 member:
     scheduler:
-        enabled: true
+        enabled: false
         cron: "0 */3 * * * *"
         test-usr-name: scheduler-lock-user
         test-email: scheduler-lock-user@example.com
@@ -32,4 +32,12 @@ member:
         enabled: true
         target-usr-name: scheduler-lock-user
         sleep-millis: 120000
+    update-scheduler:
+        enabled: true
+        cron: "0 */5 * * * *"
+        member-id: 1
+        hold-lock-millis: 120000
+        usr-name: scheduler-lock-user
+        email: scheduler-lock-user@example.com
+        password: "123456"
 
