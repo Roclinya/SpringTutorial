@@ -5,5 +5,7 @@ import com.tutorial.SpringTutorial.vo.MemberResponse;
 
 public interface MemberService {
     MemberResponse createMember(MemberCreateRequest request);
+
+    MemberResponse createMemberWithSlowCommit(MemberCreateRequest request, long commitDelayMillis);
 }
 

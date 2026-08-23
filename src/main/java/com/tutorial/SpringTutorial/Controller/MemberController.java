@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +40,13 @@ public class MemberController {
     @PostMapping("/create")
     public ResponseEntity<MemberResponse> createMember(@Valid @RequestBody MemberCreateRequest request) {
         return ResponseEntity.ok(memberService.createMember(request));
+    }
+
+    @PostMapping("/create/slow-commit")
+    public ResponseEntity<MemberResponse> createMemberWithSlowCommit(
+            @Valid @RequestBody MemberCreateRequest request,
+            @RequestParam(defaultValue = "30000") long delayMillis) {
+        return ResponseEntity.ok(memberService.createMemberWithSlowCommit(request, delayMillis));
     }
 
     @PostMapping("/scheduler/trigger")
