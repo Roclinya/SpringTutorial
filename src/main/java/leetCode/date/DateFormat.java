@@ -1,4 +1,6 @@
-package leetCode;
+package leetCode.date;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import java.sql.Timestamp;
 import java.text.*;
@@ -7,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -14,6 +17,9 @@ public class DateFormat {
 	/** yyyy/MM/dd */
 	public static final String PATTERN7 = "yyyy/MM/dd";
 	public static void main(String[] args) throws ParseException {
+
+		// 獲取指定日期的前一天
+		getBeforeDate();
 		// 查詢OTP發送紀錄(取得otp_records)
 		var currentDate = LocalDate.now();
 		var startOfDay = currentDate.atStartOfDay();
@@ -52,6 +58,21 @@ public class DateFormat {
 		System.out.println("---SQL Date default with dash-");
 		System.out.println(java.sql.Date.valueOf(testDate2));
 
+	}
+
+    /**
+     * 獲取指定日期的前一天
+     */
+	private static void getBeforeDate() {
+		Calendar calendar = Calendar.getInstance();
+// 注意：Calendar 的月份是從 0 開始算！ (0 代表 1月，10 代表 11月)
+		calendar.set(2026, Calendar.OCTOBER, 15); // 2026年10月15日
+
+		Date date = calendar.getTime(); // 轉換為舊版的 java.util.Date
+		System.out.println("Calendar date: " + date);
+
+		Date moveBeforeDate = DateUtils.truncate(DateUtils.addDays(date, -1), Calendar.DATE);
+		System.out.println("Move before date: " + moveBeforeDate);
 	}
 
 	private static Date stringToSqlDate(String testDate) throws ParseException {
