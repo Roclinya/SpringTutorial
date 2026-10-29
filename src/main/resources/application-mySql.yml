@@ -1,0 +1,67 @@
+# MySQL 專用設定；啟動參數：--spring.profiles.active=mySql
+# 共用設定由原始 application.yml 載入。
+spring:
+    datasource:
+        driver-class-name: 'com.mysql.cj.jdbc.Driver'
+        url: 'jdbc:mysql://localhost:3306/apinvoice?cachePrepStmts=true&rewriteBatchedStatements=true&useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=GMT%2B8'
+        username: 'root'
+        password: 'root'
+        hikari:
+            maximum-pool-size: 10
+    jpa:
+        show-sql: false
+        hibernate:
+            ddl-auto: 'none'
+        properties:
+            hibernate:
+                dialect: 'org.hibernate.dialect.MySQL8Dialect'
+    cache:
+        type: 'redis'
+    # Spring Boot 3 使用 spring.data.redis；數值與 application.properties 同步。
+    data:
+        redis:
+            host: 'localhost'
+            port: 6379
+            password: '0935'
+            database: 1
+            timeout: 3000
+            # 以下連線池設定僅供 Jedis 使用，Redisson 不會讀取。
+            jedis:
+                pool:
+                    max-active: 50
+                    min-idle: 5
+                    max-wait: 3000
+                    max-idle: 20
+    mail:
+        address: service@tpisoftware.com
+        host: smtp.gmail.com
+        pcode: ENC(Jg2DISMYfFQbQKTCK4xLjXhtDc+cF8oU6Ha7ohU6Tal06942tr6psxmGuCnrWDh32YhGIB2qwI0KVtkR2RyhUuEHFycit673gI7ioXiLkLcH4TFJN3OV7es02O8GZWy+Thdnv0GMdIfZLp2ywi5lkCD0VEqhLX7wKxXUAwRrMZPlkhn/fE/eQP+mx0bw/mXYOleaxcrqm85c3rPLT8j3C+rpLCr1EWKXnPMCmU/bU9FeXCOBkpTGow/sWZgKKXdqb50yCdCXIAr3KiFaQbSI/EkAKJKHQlf7R2jyfcjrBUOhJAdmU2SU0ijzhinRUpRA3dtRtviYpPqbfigh6qHN0g==)
+        username: '[langingH2]GreenSwift'
+
+redisson:
+    address: redis://${spring.data.redis.host}:${spring.data.redis.port}
+    password: ${spring.data.redis.password}
+    database: ${spring.data.redis.database}
+
+# 沿用原 H2 profile 的解密設定，供既有 ENC(...) 屬性使用。
+jasypt:
+    encryptor:
+        private-key-format: PEM
+        private-key-string: |
+            -----BEGIN PRIVATE KEY-----
+            MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCtB/IYK8E52CYMZTpyIY9U0HqMewyKnRvSo6s+9VNIn/HSh9+MoBGiADa2MaPKvetS3CD3CgwGq/+L
+            IQ1HQYGchRrSORizOcIp7KBx+Wc1riatV/tcpcuFLC1j6QJ7d2I+T7RA98Sx8X39orqlYFQVysTw/aTawX/yajx0UlTW3rNAY+ykeQ0CBHowtTxKM9nGcxLoQbvbYx1i
+            G9JgAqye7TYejOpviOH+BpD8To2S8zcOSojIhixEfayay0gURv0IKJN2LP86wkpAuAbL+mohUq1qLeWdTEBrIRXjlnrWs1M66w0l/6JwaFnGOqEB6haMzE4JWZULYYpr
+            2yKyoGCRAgMBAAECggEAQxURhs1v3D0wgx27ywO3zeoFmPEbq6G9Z6yMd5wk7cMUvcpvoNVuAKCUlY4pMjDvSvCM1znN78g/CnGF9FoxJb106Iu6R8HcxOQ4T/ehS+54
+            kDvL999PSBIYhuOPUs62B/Jer9FfMJ2veuXb9sGh19EFCWlMwILEV/dX+MDyo1qQaNzbzyyyaXP8XDBRDsvPL6fPxL4r6YHywfcPdBfTc71/cEPksG8ts6um8uAVYbLI
+            DYcsWopjVZY/nUwsz49xBCyRcyPnlEUJedyF8HANfVEO2zlSyRshn/F+rrjD6aKBV/yVWfTEyTSxZrBPl4I4Tv89EG5CwuuGaSagxfQpAQKBgQDXEe7FqXSaGk9xzuPa
+            zXy8okCX5pT6545EmqTP7/JtkMSBHh/xw8GPp+JfrEJEAJJl/ISbdsOAbU+9KAXuPmkicFKbodBtBa46wprGBQ8XkR4JQoBFj1SJf7Gj9ozmDycozO2Oy8a1QXKhHUPk
+            bPQ0+w3efwoYdfE67ZodpFNhswKBgQDN9eaYrEL7YyD7951WiK0joq0BVBLK3rwO5+4g9IEEQjhP8jSo1DP+zS495t5ruuuuPsIeodA79jI8Ty+lpYqqCGJTE6muqLMJ
+            Diy7KlMpe0NZjXrdSh6edywSz3YMX1eAP5U31pLk0itMDTf2idGcZfrtxTLrpRffumowdJ5qqwKBgF+XZ+JRHDN2aEM0atAQr1WEZGNfqG4Qx4o0lfaaNs1+H+knw5kI
+            ohrAyvwtK1LgUjGkWChlVCXb8CoqBODMupwFAqKL/IDImpUhc/t5uiiGZqxE85B3UWK/7+vppNyIdaZL13a1mf9sNI/p2whHaQ+3WoW/P3R5z5uaifqM1EbDAoGAN584
+            JnUnJcLwrnuBx1PkBmKxfFFbPeSHPzNNsSK3ERJdKOINbKbaX+7DlT4bRVbWvVj/jcw/c2Ia0QTFpmOdnivjefIuehffOgvU8rsMeIBsgOvfiZGx0TP3+CCFDfRVqjIB
+            t3HAfAFyZfiP64nuzOERslL2XINafjZW5T0pZz8CgYAJ3UbEMbKdvIuK+uTl54R1Vt6FO9T5bgtHR4luPKoBv1ttvSC6BlalgxA0Ts/AQ9tCsUK2JxisUcVgMjxBVvG0
+            lfq/EHpL0Wmn59SHvNwtHU2qx3Ne6M0nQtneCCfR78OcnqQ7+L+3YCMqYGJHNFSard+dewfKoPnWw0WyGFEWCg==
+            -----END PRIVATE KEY-----
+
+inviteEndDate: 12
